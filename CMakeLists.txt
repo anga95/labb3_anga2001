@@ -3,4 +3,4 @@ project(labb3_anga2001)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(labb3_anga2001 main.cpp)
+add_executable(labb3_anga2001 main.cpp p_queue.cpp p_queue.h)
