@@ -7,17 +7,17 @@
 //template<typename T>
 struct order{
     std::string name;
-    int value;
+    int price;
 };
 
 template<>
 struct std::less<order> {
     bool operator()(const order& lhs, const order& rhs) {
-        return lhs.value < rhs.value;
+        return lhs.price < rhs.price;
     }
 };
 std::ostream& operator <<(std::ostream &os, const order& rhs){
-    os << rhs.name << "\t[" << rhs.value << "]";
+    os << rhs.name << "\t[" << rhs.price << "]";
     return os;
 }
 void placeOrders(const std::string &name, p_queue<order> &vec){
@@ -32,22 +32,21 @@ void broker(p_queue<order> &sellerList, p_queue<order> &buyerList){
     std::vector<std::pair<order, order>> sales;
     while (!sellerList.empty() && !buyerList.empty()){
 
-        if (buyer.value >= seller.value){
+        if (buyer.price >= seller.price){
 
-            std::cout<<"[" << buyer.value << "] >= [" << seller.value
-                     <<"] --- [" << buyer.name << "] köpte från [" << seller.name <<"]"<< std::endl;
+            std::cout << "[" << buyer.price << "] >= [" << seller.price
+                      << "] --- [" << buyer.name << "] köpte från [" << seller.name << "]" << std::endl;
             sales.emplace_back(buyer,seller);
             seller = sellerList.pop();
         } else{
-            std::cout <<"Lägsta sälj pris: ["<<seller.value<< "]. Lägsta köp pris: ["<<buyer.value<<"] kr. "<<
-            buyer.name << " stryks från köp pga snåljåp" << std::endl;
+            std::cout << "Lägsta sälj pris: [" << seller.price << "]. Lägsta köp pris: [" << buyer.price << "] kr. " <<
+                      buyer.name << " stryks från köp pga snåljåp" << std::endl;
         }
             buyer = buyerList.pop();
-
     }
     std::cout << std::endl;
     std::cout << "Köp som genomfördes: [" << sales.size() <<"]" << "\n";
-    for (auto e: sales) {
+    for (const auto& e: sales) {
         std::cout << e.first << " köpte från " << e.second << "\n";
     }
 }
@@ -67,15 +66,12 @@ int main() {
     placeOrders("Joakim con Anka", seller);
 
     broker(seller,buyer);
-//    while (!buyer.empty()){
-//        std::cout << buyer.pop();
-//    }
 
     return 0;
 }
 //struct compare_by_price{
 //    bool operator()(const order& lhs, const order& rhs) {
-//        return lhs.value < rhs.value ;
+//        return lhs.price < rhs.price ;
 //    }
 //};
 //template<typename T>
